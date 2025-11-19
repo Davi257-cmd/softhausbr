@@ -40,17 +40,22 @@ export default function PistachioBurst() {
       <motion.img
         src="/secao1/Sorvete.svg"
         alt="Sorvete Soft Haus"
-        className="object-contain w-[500px] h-[1000px]"
+        className="object-contain w-[400px] h-[800px] sm:w-[500px] sm:h-[1000px]"
         initial={{ scale: 1.08 }}
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
       />
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center origin-center scale-90 sm:scale-100">
         {seeds.map((seed, idx) => (
           <motion.div
             key={idx}
             initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
-            animate={{ x: seed.x, y: seed.y, scale: 1, opacity: 1 }}
+            animate={{ 
+              x: seed.x, 
+              y: seed.y, 
+              scale: 1, 
+              opacity: 1 
+            }}
             transition={{ duration: 1.2, ease: 'easeOut', delay: seed.delay }}
             className="absolute"
             style={{ transformOrigin: 'center' }}
@@ -58,10 +63,10 @@ export default function PistachioBurst() {
             <motion.img
               src={seed.src}
               alt="Semente de pistache"
-              style={{ width: seed.size, height: seed.size, rotate: seed.rotate }}
+              style={{ rotate: seed.rotate }}
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 2.4, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut', delay: 1 + seed.delay }}
-              className="drop-shadow-md"
+              className="drop-shadow-md w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]"
             />
           </motion.div>
         ))}

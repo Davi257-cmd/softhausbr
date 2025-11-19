@@ -132,87 +132,107 @@ function MenuPopup({ open, onOpenChange, groups }: { open: boolean; onOpenChange
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 w-[95vw] sm:w-[90vw] max-w-5xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-beige-50 shadow-2xl border border-sage-200 overflow-hidden">
-          <div className="flex">
-            <div className="hidden sm:block w-6 bg-[repeating-linear-gradient(45deg,theme(colors.sage.300),theme(colors.sage.300)_8px,transparent_8px,transparent_16px)]" />
-            <div className="flex-1 p-4 sm:p-6 md:p-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl md:text-3xl font-bold text-sage-800">Cardápio Soft Haus</h3>
-                <Dialog.Close className="rounded-md px-3 py-1 bg-sage-100 text-sage-700 hover:bg-sage-200">Fechar</Dialog.Close>
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 w-[98vw] sm:w-[95vw] md:w-[90vw] max-w-5xl max-h-[95vh] sm:max-h-[90vh] md:max-h-[85vh] -translate-x-1/2 -translate-y-1/2 rounded-xl sm:rounded-2xl bg-beige-50 shadow-2xl border border-sage-200 overflow-hidden z-50 flex flex-col">
+          <div className="flex flex-1 min-h-0">
+            <div className="hidden sm:block w-4 md:w-6 bg-[repeating-linear-gradient(45deg,theme(colors.sage.300),theme(colors.sage.300)_8px,transparent_8px,transparent_16px)] flex-shrink-0" />
+            <div className="flex-1 flex flex-col min-w-0 p-3 sm:p-4 md:p-6 lg:p-8">
+              {/* Header fixo */}
+              <div className="flex items-center justify-between mb-3 sm:mb-4 flex-shrink-0">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-sage-800 leading-tight">Cardápio Soft Haus</h3>
+                <Dialog.Close className="rounded-md px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm bg-sage-100 text-sage-700 hover:bg-sage-200 transition-colors flex-shrink-0 ml-2">
+                  Fechar
+                </Dialog.Close>
               </div>
-              <div className="flex flex-wrap gap-2 mt-4">
+              
+              {/* Categorias em grid no mobile, linha no desktop */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 flex-shrink-0">
                 {groups.map((g, i) => (
                   <button
                     key={g.title}
                     onClick={() => setActive(i)}
-                    className={`px-3 py-2 rounded-full text-sm font-semibold border ${active === i ? 'bg-sage-600 text-white border-sage-600' : 'bg-white text-sage-700 border-sage-300 hover:bg-sage-50'}`}
+                    className={`px-2.5 py-2 sm:px-3 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border transition-colors text-center min-h-[36px] flex items-center justify-center ${
+                      active === i 
+                        ? 'bg-sage-600 text-white border-sage-600' 
+                        : 'bg-white text-sage-700 border-sage-300 hover:bg-sage-50 active:scale-95'
+                    }`}
                   >
-                    {g.title}
+                    <span className="line-clamp-2">{g.title}</span>
                   </button>
                 ))}
               </div>
-              <div className="mt-6 max-h-[70vh] sm:max-h-[65vh] md:max-h-[60vh] overflow-auto pr-2">
-                {groups[active].title.toLowerCase().includes('forma') ? (
-                  <div className="space-y-6">
-                    {/* Cards principais */}
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="rounded-xl bg-beige-100 p-5 border border-sage-200 shadow-sm flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg bg-beige-200 flex items-center justify-center">
-                          <Smartphone className="w-6 h-6 text-sage-700" />
+              
+              {/* Conteúdo scrollável com overlay */}
+              <div className="flex-1 min-h-0 relative">
+                {/* Overlay superior para indicar scroll */}
+                <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-beige-50 to-transparent pointer-events-none z-10 rounded-t-lg" />
+                
+                {/* Área de conteúdo scrollável */}
+                <div className="h-full overflow-y-auto overflow-x-hidden pr-1 sm:pr-2 scrollbar-thin scrollbar-thumb-sage-300 scrollbar-track-transparent">
+                  {groups[active].title.toLowerCase().includes('forma') ? (
+                    <div className="space-y-4 sm:space-y-6 pb-4">
+                      {/* Cards principais */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="rounded-lg sm:rounded-xl bg-beige-100 p-3 sm:p-4 md:p-5 border border-sage-200 shadow-sm flex items-center gap-2 sm:gap-3">
+                          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-beige-200 flex items-center justify-center flex-shrink-0">
+                            <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-sage-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sage-800 font-semibold text-sm sm:text-base">PIX</p>
+                            <p className="text-sage-600 text-xs">Pagamento instantâneo</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sage-800 font-semibold">PIX</p>
-                          <p className="text-sage-600 text-xs">Pagamento instantâneo</p>
+                        <div className="rounded-lg sm:rounded-xl bg-beige-100 p-3 sm:p-4 md:p-5 border border-sage-200 shadow-sm flex items-center gap-2 sm:gap-3">
+                          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-beige-200 flex items-center justify-center flex-shrink-0">
+                            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-sage-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sage-800 font-semibold text-sm sm:text-base">Débito ou Crédito</p>
+                            <p className="text-sage-600 text-xs">Cartões habilitados</p>
+                          </div>
+                        </div>
+                        <div className="rounded-lg sm:rounded-xl bg-beige-100 p-3 sm:p-4 md:p-5 border border-sage-200 shadow-sm flex items-center gap-2 sm:gap-3 sm:col-span-2 md:col-span-1">
+                          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-beige-200 flex items-center justify-center flex-shrink-0">
+                            <Wallet className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-sage-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sage-800 font-semibold text-sm sm:text-base">Vale Refeição</p>
+                            <p className="text-sage-600 text-xs">Benefícios aceitos</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="rounded-xl bg-beige-100 p-5 border border-sage-200 shadow-sm flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg bg-beige-200 flex items-center justify-center">
-                          <CreditCard className="w-6 h-6 text-sage-700" />
-                        </div>
-                        <div>
-                          <p className="text-sage-800 font-semibold">Débito ou Crédito</p>
-                          <p className="text-sage-600 text-xs">Cartões habilitados</p>
-                        </div>
-                      </div>
-                      <div className="rounded-xl bg-beige-100 p-5 border border-sage-200 shadow-sm flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg bg-beige-200 flex items-center justify-center">
-                          <Wallet className="w-6 h-6 text-sage-700" />
-                        </div>
-                        <div>
-                          <p className="text-sage-800 font-semibold">Vale Refeição</p>
-                          <p className="text-sage-600 text-xs">Benefícios aceitos</p>
-                        </div>
-                      </div>
-                    </div>
 
-                    {/* Bandeiras */}
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="px-3 py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold">Sodexo</span>
-                      <span className="px-3 py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold">Alelo</span>
-                      <span className="px-3 py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold">Ticket</span>
-                      <span className="px-3 py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold">VR Refeição</span>
+                      {/* Bandeiras */}
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <span className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold text-xs sm:text-sm">Sodexo</span>
+                        <span className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold text-xs sm:text-sm">Alelo</span>
+                        <span className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold text-xs sm:text-sm">Ticket</span>
+                        <span className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white border border-sage-200 text-sage-800 font-semibold text-xs sm:text-sm">VR Refeição</span>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {groups[active].items.map((item, ii) => (
-                      <div key={ii} className="rounded-lg bg-white px-4 py-3 border border-sage-200">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <p className="font-semibold text-sage-800">{item.name}</p>
-                            {item.description && (
-                              <p className="text-sm text-sage-600">{item.description}</p>
+                  ) : (
+                    <div className="space-y-2 sm:space-y-3 pb-4">
+                      {groups[active].items.map((item, ii) => (
+                        <div key={ii} className="rounded-lg bg-white px-3 py-2.5 sm:px-4 sm:py-3 border border-sage-200">
+                          <div className="flex items-start justify-between gap-2 sm:gap-4">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-sage-800 text-sm sm:text-base leading-tight">{item.name}</p>
+                              {item.description && (
+                                <p className="text-xs sm:text-sm text-sage-600 mt-1 leading-relaxed">{item.description}</p>
+                              )}
+                            </div>
+                            {item.price && (
+                              <p className="text-sage-800 font-semibold whitespace-nowrap text-xs sm:text-sm md:text-base flex-shrink-0 ml-2">{item.price}</p>
                             )}
                           </div>
-                          {item.price && (
-                            <p className="text-sage-800 font-semibold whitespace-nowrap">{item.price}</p>
-                          )}
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Overlay inferior para indicar scroll */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-beige-50 to-transparent pointer-events-none z-10 rounded-b-lg" />
               </div>
             </div>
           </div>
